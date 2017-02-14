@@ -13,3 +13,11 @@ exports.getComentarios = function(request, response){
 	db.getComentarios(request,response);
 };
 
+exports.getBusqueda = function(request, response){
+	response.render('busqueda');
+}
+
+
+exports.getResults = function(request, response){
+	db.getResults(request, response);
+}
