@@ -1,5 +1,5 @@
 Create DataBase BaseProductos;
-
+use BaseProductos;
 CREATE TABLE Producto(
 	idProducto integer AUTO_INCREMENT,
 	nombre varchar(30),

@@ -1,25 +1,23 @@
 var mysql = require('mysql');
 
-/*
 var db = mysql.createConnection({
   host:     '127.0.0.1',
   user:     'root',
-  password: 'sasukekun30',
-  database: 'sustentacion'
+  password: 'cualquiera123',
+  database: 'baseproductos'
 });
 
 
-obtenerPaises2= function(request, response){ //recibe un objeto ruta
+exports.getComentarios= function(request, response){ //recibe un objeto ruta
 
-	var queryString = "SELECT * FROM pais";
+	var queryString = "SELECT * FROM comentario";
 	db.query(queryString, function(err, rows, fields) {
 	    if (err) throw err;
 	 
 	    console.log(rows);
-		response.render('paises',{paises:rows});
+		response.json({comentarios:rows});
 	});
 
 }
 
-*/
 
