@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Authors</title>
+		<meta charset="utf-8">
+		<script src="http://code.jquery.com/jquery-latest.min.js"
+        type="text/javascript"></script>
+		<style>
+			td{
+				border: 2px solid black ;
+				padding: 3px;
+			}
+			.header{
+				color: white;
+				background: red;
+			}
+			.visible{
+				display: "";
+			}
+			.invisible{
+				display: none;
+			}
+		</style>
+		<script type="text/javascript">
+			function filtrar(nombre){
+				$('tr').css("display","");
+				var filas= $('tr');
+				var nombres=$('.name');
+				for(i=0; i<filas.length;i++){
+					console.log(nombres[i]);
+					nombreMayuscula=nombres[i].innerHTML.toUpperCase();
+					if(nombreMayuscula.search(txtNombre.value.toUpperCase())==-1){
+						filas[i+1].style.display="none";
+					}
+				}
+				$('.header').css("display","");
+
+				
+			}
+
+			function mostrarAutores(evt){
+				var respond = event.target.responseText;
+				var conver = JSON.parse(respond);
+				console.log(conver.a);
+				autores=conver.a;
+				sessionStorage['sin']=conver.sin;
+				tabla.innerHTML="<tr class='header'><td>Codigo</td><td>Nombre</td><td>Apellido</td><td>Telefono</td><td>Direccion</td><td>Ciudad</td><td>Estado</td><td>Codigo postal</td> <td>Contacto</td></tr>";
+				for(i in autores){
+					//declaracion
+					var fila=document.createElement("tr");
+					var codigo=document.createElement("td");
+					var nombre=document.createElement("td");
+					var apellido=document.createElement("td");
+					var telefono=document.createElement("td");
+					var direccion=document.createElement("td");
+					var ciudad=document.createElement("td");
+					var estado=document.createElement("td");
+					var postal=document.createElement("td");
+					var contacto=document.createElement("td");
+					//escritura
+					codigo.innerHTML=autores[i].aud_id;
+					nombre.innerHTML=autores[i].au_lname;
+					nombre.setAttribute("class","name");
+					apellido.innerHTML=autores[i].au_fname;
+					telefono.innerHTML=autores[i].phone;
+					direccion.innerHTML=autores[i].address;
+					ciudad.innerHTML=autores[i].city;
+					estado.innerHTML=autores[i].state;
+					postal.innerHTML=autores[i].zip;
+					contacto.innerHTML=autores[i].contract;
+
+					//agregacion
+					fila.setAttribute("class","visible");
+					fila.appendChild(codigo);
+					fila.appendChild(nombre);
+					fila.appendChild(apellido);
+					fila.appendChild(telefono);
+					fila.appendChild(direccion);
+					fila.appendChild(ciudad);
+					fila.appendChild(estado);
+					fila.appendChild(postal);
+					fila.appendChild(contacto);
+					tabla.appendChild(fila);
+
+
+				}
+			}
+
+			function next(){
+				if(sessionStorage['sin']!=0){
+					tabla.innerHTML="";
+					txtNombre.value="";
+					console.log("siguiente");
+					sessionStorage['paguina']++;
+					var url = "/autores?pag="+sessionStorage['paguina'];
+			        var request = new XMLHttpRequest();
+			        request.addEventListener('load',mostrarAutores, false);
+			        request.open("GET",url, true);
+			        request.send(null);
+			    }
+
+			}
+
+			function prev(){
+				if(sessionStorage['paguina']>0){
+					tabla.innerHTML="";
+					txtNombre.value="";
+					console.log("Anterior");
+					sessionStorage['paguina']--;
+					var url = "/autores?pag="+sessionStorage['paguina'];
+			        var request = new XMLHttpRequest();
+			        request.addEventListener('load',mostrarAutores, false);
+			        request.open("GET",url, true);
+			        request.send(null);
+		    	}
+			}
+
+
+			function inicializar(){
+				
+				btnFiltrar.addEventListener('click',filtrar,false);
+				btnNext.addEventListener('click',next,false);
+				btnPrev.addEventListener('click',prev,false);
+				sessionStorage['paguina'] = 0;
+				var url = "/autores?pag=0";
+		        var request = new XMLHttpRequest();
+		        request.addEventListener('load',mostrarAutores, false);
+		        request.open("GET",url, true);
+		        request.send(null);
+			}
+			window.addEventListener('load', inicializar, false);
+		</script>
+	</head>
+	<body>
+		
+		<section>
+			<h1>Autores</h1>
+			<span>Nombre:</span>
+			<input type="text" id="txtNombre">
+			<input id="btnFiltrar" type="button" value="...">
+			<div>
+				<table id="tabla">
+					
+				</table>
+			</div>
+			
+			<input type="button" value="Anterior" id="btnPrev">
+			<input type="button" value="Siguiente" id="btnNext">
+		</section>
+	
+	</body>
+</html>
