@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var db = mysql.createConnection({
   host:     '127.0.0.1',
   user:     'root',
-  password: '',
+  password: 'cualquiera123',
   database: 'baseproductos'
 });
 
@@ -20,7 +20,6 @@ exports.getComentarios= function(request, response){ //recibe un objeto ruta
 
 }
 
-<<<<<<< HEAD
 exports.addComentario= function(request, response){ //recibe un objeto ruta
 	texto = request.body.texto;
 	console.log(texto)
