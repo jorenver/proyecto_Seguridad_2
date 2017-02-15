@@ -42,7 +42,7 @@
 			function getResults(str){
 				var xhr = new XMLHttpRequest();   // new HttpRequest instance 
 				console.log("escapado", escape(str))
-				xhr.open("GET", "/getResults?str=" + escape(str));
+				xhr.open("GET", "/getResultsSecure?str=" + escape(str));
 				xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 				xhr.addEventListener('load', function (event) {
 					//se ha completado un guardado
