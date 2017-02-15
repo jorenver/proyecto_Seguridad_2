@@ -13,3 +13,9 @@ exports.getComentarios = function(request, response){
 	db.getComentarios(request,response);
 };
 
+exports.addComentario = function(request, response){
+	console.log("add comentario");
+	db.addComentario(request,response);
+};
+
+

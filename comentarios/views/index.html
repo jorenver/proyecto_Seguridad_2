@@ -6,19 +6,19 @@
 		<script src="http://code.jquery.com/jquery-latest.min.js"
         type="text/javascript"></script>
 		<style>
-		.coment{
-			border:1px solid black;
-			padding: 10px;
-			width: 400px;
-		}
-		#txtComentario{
-			width: 300px;
-			height: 100px;
-		}
-		#btnPublicar{
-			width: 100px;
-			height: 100px;
-		}
+			.coment{
+				border:1px solid black;
+				padding: 10px;
+				width: 400px;
+			}
+			#txtComentario{
+				width: 300px;
+				height: 100px;
+			}
+			#btnPublicar{
+				width: 100px;
+				height: 100px;
+			}
 			
 		</style>
 		<script type="text/javascript">
@@ -26,16 +26,30 @@
 			function addComentario(text){
 				var objTo = document.getElementById('comentarios')
     			var divComent = document.createElement("div");
-    			divComent.innerHTML = "<div class='coment'> <p>" +text+ "</div> </p>"
+    			divComent.innerHTML = "<div class='coment'> <p>" +text+ "</p> </div>"
     			objTo.appendChild(divComent)
 			}
 
+			function procesarAddComentario(event){
+				var respond = event.target.responseText;
+				var conver = JSON.parse(respond);
+				if(conver.value){
+					getComentarios();
+				}
+			}
 			
 			function publicar(event){
 				if(txtComentario.value!=""){
-					addComentario(txtComentario.value);
+					//addComentario(txtComentario.value);
+					var url = "/addComentario";
+					var request = new XMLHttpRequest();
+					request.addEventListener('load',procesarAddComentario, false);
+					request.open("POST",url, true);
+					request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+					request.send(JSON.stringify({texto:txtComentario.value}));
 					txtComentario.value="";
 				}
+
 			}
 
 			function procesarComentarios(event){
@@ -43,6 +57,8 @@
 				var conver = JSON.parse(respond);
 				comentarios=conver.comentarios;
 				console.log(comentarios);
+				var objTo = document.getElementById('comentarios');
+				objTo.innerHTML="";
 				for (var i = 0; i < comentarios.length; i++) {
 					addComentario(comentarios[i].texto);
 				};
