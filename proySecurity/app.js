@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
-/*
+
 app.use(bodyParser.urlencoded());
 app.use(validator());
 app.use(function(req, res, next) {
@@ -37,27 +37,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-
-app.use(helmet.csp({
-  defaultSrc: ["'self'"],
-  scriptSrc: ['*.google-analytics.com'],
-  styleSrc: ["'unsafe-inline'"],
-  imgSrc: ['*.google-analytics.com'],
-  connectSrc: ["'none'"],
-  fontSrc: [],
-  objectSrc: [],
-  mediaSrc: [],
-  frameSrc: []
-}));
-*/
-app.use(helmet());
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
 
 // error handler
 app.use(function(err, req, res, next) {

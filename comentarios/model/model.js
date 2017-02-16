@@ -1,4 +1,5 @@
 var mysql = require('mysql');
+var xss = require('xss');
 
 var db = mysql.createConnection({
   host:     '127.0.0.1',
@@ -23,8 +24,23 @@ exports.getComentarios= function(request, response){ //recibe un objeto ruta
 exports.addComentario= function(request, response){ //recibe un objeto ruta
 	texto = request.body.texto;
 	console.log(texto)
+	var html = xss('<script>alert("xss");</script>');
+	console.log(html);
 	var queryString = " INSERT INTO comentario SET  ? ";
 	db.query(queryString,{texto:texto},function(){
+		console.log("se agrego el comentario");
+		response.json({value:true});
+	});
+
+}
+
+exports.addComentarioSeguro= function(request, response){ //recibe un objeto ruta
+	texto = request.body.texto;
+	var textoSeguro = xss(texto);
+	console.log("Texto NO Seguro: "+texto)
+	console.log("Texto Seguro: "+textoSeguro)
+	var queryString = " INSERT INTO comentario SET  ? ";
+	db.query(queryString,{texto:textoSeguro},function(){
 		console.log("se agrego el comentario");
 		response.json({value:true});
 	});
